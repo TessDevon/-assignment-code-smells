@@ -124,7 +124,7 @@ function presentStudents(students: Student[]) {
   6. Skriv en funktion som skall slå ihop följande texter på ett bra sätt:
   Lorem, ipsum, dolor, sit, amet
   Exemplet under löser problemet, men inte speciellt bra. Hur kan man göra istället?
-  */
+  
 function concatenateStrings() {
   let result = "";
   result += "Lorem";
@@ -135,13 +135,34 @@ function concatenateStrings() {
 
   return result;
 }
+*/
+
+function concatenateStrings() {
+  const texts: string[] = ["Lorem", "ipsum", "dolor", "sit", "amet"];
+  
+  let sumOfTexts = "";
+
+  for(let i=0; i<texts.length;i++){
+    sumOfTexts+=texts[i];
+  }
+  return sumOfTexts;
+}
+
+//alt.
+
+function concatenateStrings() {
+  const texts: string[] = ["Lorem", "ipsum", "dolor", "sit", "amet"];
+  
+return texts.join('');
+}
+
 
 /* 
 7. Denna funktion skall kontrollera att en användare är över 20 år och göra någonting.
     Det finns dock problem med denna typ av funktion. Vad händer när kraven ändras och
     fler och fler parametrar behöver läggas till? T.ex. avatar eller adress. Hitta en bättre
     lösning som är hållbar och skalar bättre. 
-*/
+
 function createUser(
   name: string,
   birthday: Date,
@@ -157,6 +178,27 @@ function createUser(
   console.log(userAge);
 
   if (!(userAge < 20)) {
+    // Logik för att skapa en användare
+  } else {
+    return "Du är under 20 år";
+  }
+}*/
+
+function createUser(
+  name: string,
+  birthday: Date,
+  email: string,
+  password: string
+) {
+  // Validation
+
+  let ageDiff = Date.now() - birthday.getTime();
+  let ageDate = new Date(ageDiff);
+  let userAge = Math.abs(ageDate.getUTCFullYear() - 1970);
+
+  console.log(userAge);
+
+  if ((userAge >= 20)) {
     // Logik för att skapa en användare
   } else {
     return "Du är under 20 år";
