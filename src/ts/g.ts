@@ -2,17 +2,17 @@
   1. Se om du kan hitta två stycken code smells i följande funktion och rätta till dem.
   Funktionen tar emot en lista med längshoppslängder och syftet med funktionen är att summera
   dessa hopplängder.
-  */
+*/
 
-function getLength(jumpings: number[]): number {
-  let totalNumber = 0;
+function getTotalLength(lengths: number[]): number {
 
-  totalNumber = jumpings.reduce(
-    (jumpDistanceSoFar, currentJump) => jumpDistanceSoFar + currentJump
-  );
-
-  return totalNumber;
+  return lengths.reduce((previusValue,currentValue) => {
+    return previusValue + currentValue;
+  });
 }
+
+//KLAR!
+ 
 
 /*
   2. I detta exempel har vi fokuserat på if-statements. Se om du kan göra exemplet bättre!
@@ -26,25 +26,24 @@ class Student {
   ) {}
 }
 
-function getStudentStatus(student: Student): string {
-  student.passed =
-    student.name == "Sebastian"
-      ? student.handedInOnTime
-        ? true
-        : false
-      : false;
-
-  if (student.passed) {
-    return "VG";
-  } else {
-    return "IG";
+function getStudentGrade(student: Student): string {
+  if(student.name==="Sebastian") {
+    if(student.handedInOnTime) {
+      student.passed = true;
+      return "VG";
+    }
   }
+  student.passed = false;
+  return "IG";
 }
+
+//KLAR!
+
 
 /*
   3. Variabelnamn är viktiga. Kika igenom följande kod och gör om och rätt.
   Det finns flera code smells att identifiera här. Vissa är lurigare än andra.
-  */
+ 
 
 class Temp {
   constructor(public q: string, public where: Date, public v: number) {}
@@ -62,7 +61,31 @@ function averageWeeklyTemperature(heights: Temp[]) {
   }
 
   return r / 7;
+} */
+
+
+
+class Temp {
+  constructor(public city: string, public MeasurementTime: Date, public highestTemperature: number) {}
 }
+
+function averageWeeklyTemperature(heights: Temp[]) {
+  let SumOfTemperature = 0;
+  const sevenDaysInMilliseconds = 604800000;                  //Dessa två exempel med siffror är konstanta tal. Kan vara global med stora bokstäver och understräck.
+  const numberOfDaysInAWeek = 7;                              //Men då de endast används i en funktion kommer de få skrivas ut med camelCase.
+
+  for (let who = 0; who < heights.length; who++) {
+    if (heights[who].city === "Stockholm") {
+      if (heights[who].temperatureMeasurementWhen.getTime() > Date.now() - sevenDaysInMilliseconds) {
+        SumOfTemperature += heights[who].highestTemperature;
+      }
+    }
+  }
+
+  return SumOfTemperature / numberOfDaysInAWeek;
+}
+
+//Jobbar på den!
 
 /*
   4. Följande funktion kommer att presentera ett objekt i dom:en. 
@@ -157,6 +180,8 @@ return texts.join('');
 }
 
 
+//Jobbar på den!
+
 /* 
 7. Denna funktion skall kontrollera att en användare är över 20 år och göra någonting.
     Det finns dock problem med denna typ av funktion. Vad händer när kraven ändras och
@@ -204,3 +229,6 @@ function createUser(
     return "Du är under 20 år";
   }
 }
+
+
+//Jobbar på den!
