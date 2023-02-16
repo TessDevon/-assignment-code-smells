@@ -66,42 +66,47 @@ function averageWeeklyTemperatureInStockholm(measurements: Temp[]) :number {
   return sumOfTemperatures / numberOfDaysInAWeek;             
 }
 
-//Klar så gott det går!
+//KLAR!
 
 /*
   4. Följande funktion kommer att presentera ett objekt i dom:en. 
   Se om du kan göra det bättre. Inte bara presentationen räknas, även strukturer.
-  */
+*/
 
-function showProduct(
-  name: string,
-  price: number,
-  amount: number,
-  description: string,
-  image: string,
-  parent: HTMLElement
-) {
-  let container = document.createElement("div");
-  let title = document.createElement("h4");
-  let pris = document.createElement("strong");
-  let imageTag = document.createElement("img");
+class Product {
+  constructor(
+  public name: string,
+  public price: number,
+  public amount: number, 
+  public description: string,
+  public image: string
+  ) {}
+}
 
-  title.innerHTML = name;
-  pris.innerHTML = price.toString();
-  imageTag.src = image;
+function showProduct (product: Product, parent: HTMLElement) {
+  const container = document.createElement("div");
 
+  const title = document.createElement("h4");
+  title.innerHTML = product.name;
   container.appendChild(title);
+
+  const price = document.createElement("strong");
+  price.innerHTML = product.price.toString();
+  container.appendChild(price);
+
+  const imageTag = document.createElement("img");
+  imageTag.src = product.image;
   container.appendChild(imageTag);
-  container.appendChild(pris);
+
   parent.appendChild(container);
 }
 
-//Grund för HTML. Prent är en HTML-tagg. Document.body utan parenten då. FRÅGA!! TAS BORT!! 
+//KLAR! 
 
 /*
   5. Följande funktion kommer presentera studenter. Men det finns ett antal saker som 
   går att göra betydligt bättre. Gör om så många som du kan hitta!
-  */
+  
 function presentStudents(students: Student[]) {
   for (const student of students) {
     if (student.handedInOnTime) {
@@ -124,7 +129,32 @@ function presentStudents(students: Student[]) {
       listOfStudents?.appendChild(container);
     }
   }
+}*/
+
+function createStudent(student: Student) {
+  let container = document.createElement("div");
+  let checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.checked = student.handedInOnTime;
+  container.appendChild(checkbox);
 }
+
+
+
+function presentStudents(students: Student[]) {
+  for (const student of students) {
+    createStudent(student);
+    if (student.handedInOnTime) {
+      let listOfStudents = document.querySelector("ul#passedstudents");
+      listOfStudents?.appendChild(container);
+    } else {
+      let listOfStudents = document.querySelector("ul#failedstudents");
+      listOfStudents?.appendChild(container);
+    }
+  }
+}
+
+// Under arbete. EJ klar!
 
 /*
   6. Skriv en funktion som skall slå ihop följande texter på ett bra sätt:
