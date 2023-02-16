@@ -11,12 +11,10 @@ function getTotalLength(lengths: number[]): number {
   });
 }
 
-//KLAR!
- 
 
 /*
   2. I detta exempel har vi fokuserat på if-statements. Se om du kan göra exemplet bättre!
-  */
+*/
 
 class Student {
   constructor(
@@ -37,13 +35,10 @@ function getStudentGrade(student: Student): string {
   return "IG";
 }
 
-//KLAR!
-
 
 /*
   3. Variabelnamn är viktiga. Kika igenom följande kod och gör om och rätt.
   Det finns flera code smells att identifiera här. Vissa är lurigare än andra.
- 
 */
 
 class Temp {
@@ -66,7 +61,6 @@ function averageWeeklyTemperatureInStockholm(measurements: Temp[]) :number {
   return sumOfTemperatures / numberOfDaysInAWeek;             
 }
 
-//KLAR!
 
 /*
   4. Följande funktion kommer att presentera ett objekt i dom:en. 
@@ -101,60 +95,35 @@ function showProduct (product: Product, parent: HTMLElement) {
   parent.appendChild(container);
 }
 
-//KLAR! 
 
 /*
   5. Följande funktion kommer presentera studenter. Men det finns ett antal saker som 
   går att göra betydligt bättre. Gör om så många som du kan hitta!
-  
-function presentStudents(students: Student[]) {
-  for (const student of students) {
-    if (student.handedInOnTime) {
-      let container = document.createElement("div");
-      let checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.checked = true;
+  */
 
-      container.appendChild(checkbox);
-      let listOfStudents = document.querySelector("ul#passedstudents");
-      listOfStudents?.appendChild(container);
-    } else {
-      let container = document.createElement("div");
-      let checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.checked = false;
-
-      container.appendChild(checkbox);
-      let listOfStudents = document.querySelector("ul#failedstudents");
-      listOfStudents?.appendChild(container);
-    }
-  }
-}*/
-
-function createStudent(student: Student) {
-  let container = document.createElement("div");
-  let checkbox = document.createElement("input");
+function createStudent(student: Student): HTMLElement {
+  const container = document.createElement("div");
+  const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
   checkbox.checked = student.handedInOnTime;
   container.appendChild(checkbox);
+  return container;
 }
-
-
 
 function presentStudents(students: Student[]) {
   for (const student of students) {
-    createStudent(student);
+    const container = createStudent(student);
+    
     if (student.handedInOnTime) {
-      let listOfStudents = document.querySelector("ul#passedstudents");
+      const listOfStudents = document.querySelector("ul#passedstudents");
       listOfStudents?.appendChild(container);
     } else {
-      let listOfStudents = document.querySelector("ul#failedstudents");
+      const listOfStudents = document.querySelector("ul#failedstudents");
       listOfStudents?.appendChild(container);
     }
   }
 }
 
-// Under arbete. EJ klar!
 
 /*
   6. Skriv en funktion som skall slå ihop följande texter på ett bra sätt:
@@ -168,8 +137,6 @@ function concatenateStrings() :string {
 return texts.join('');
 }
 
-
-//KLAR!!
 
 /* 
 7. Denna funktion skall kontrollera att en användare är över 20 år och göra någonting.
@@ -204,6 +171,3 @@ function createUser(user: User) {
     return "Du är under 20 år";
   }
 }
-
-
-//KLAR!!
