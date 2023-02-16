@@ -44,48 +44,29 @@ function getStudentGrade(student: Student): string {
   3. Variabelnamn är viktiga. Kika igenom följande kod och gör om och rätt.
   Det finns flera code smells att identifiera här. Vissa är lurigare än andra.
  
+*/
 
 class Temp {
-  constructor(public q: string, public where: Date, public v: number) {}
+  constructor(public city: string, public timeOfMeasurement: Date, public highestTemperature: number) {}
 }
 
-function averageWeeklyTemperature(heights: Temp[]) {
-  let r = 0;
+function averageWeeklyTemperatureInStockholm(measurements: Temp[]) :number {
+  let sumOfTemperatures = 0;
+  const sevenDaysInMilliseconds = 604800000;                  //Dessa två konstanter med siffror är konstanta tal. Ska vara global med stora bokstäver och understreck om de används på fler ställe i koden.
+  const numberOfDaysInAWeek = 7;                              //Men då de endast används i en funktion skrivs de ut med camelCase i funktionen.
 
-  for (let who = 0; who < heights.length; who++) {
-    if (heights[who].q === "Stockholm") {
-      if (heights[who].where.getTime() > Date.now() - 604800000) {
-        r += heights[who].v;
+  for (let i = 0; i < measurements.length; i++) {
+    if (measurements[i].city === "Stockholm") {
+      if (measurements[i].timeOfMeasurement.getTime() > Date.now() - sevenDaysInMilliseconds) {
+        sumOfTemperatures += measurements[i].highestTemperature;
       }
     }
   }
 
-  return r / 7;
-} */
-
-
-
-class Temp {
-  constructor(public city: string, public MeasurementTime: Date, public highestTemperature: number) {}
+  return sumOfTemperatures / numberOfDaysInAWeek;             
 }
 
-function averageWeeklyTemperature(heights: Temp[]) {
-  let SumOfTemperature = 0;
-  const sevenDaysInMilliseconds = 604800000;                  //Dessa två exempel med siffror är konstanta tal. Kan vara global med stora bokstäver och understräck.
-  const numberOfDaysInAWeek = 7;                              //Men då de endast används i en funktion kommer de få skrivas ut med camelCase.
-
-  for (let who = 0; who < heights.length; who++) {
-    if (heights[who].city === "Stockholm") {
-      if (heights[who].temperatureMeasurementWhen.getTime() > Date.now() - sevenDaysInMilliseconds) {
-        SumOfTemperature += heights[who].highestTemperature;
-      }
-    }
-  }
-
-  return SumOfTemperature / numberOfDaysInAWeek;
-}
-
-//Jobbar på den!
+//Klar så gott det går!
 
 /*
   4. Följande funktion kommer att presentera ett objekt i dom:en. 
@@ -114,6 +95,8 @@ function showProduct(
   container.appendChild(pris);
   parent.appendChild(container);
 }
+
+//Grund för HTML. Prent är en HTML-tagg. Document.body utan parenten då. FRÅGA!! TAS BORT!! 
 
 /*
   5. Följande funktion kommer presentera studenter. Men det finns ett antal saker som 
@@ -147,83 +130,45 @@ function presentStudents(students: Student[]) {
   6. Skriv en funktion som skall slå ihop följande texter på ett bra sätt:
   Lorem, ipsum, dolor, sit, amet
   Exemplet under löser problemet, men inte speciellt bra. Hur kan man göra istället?
-  
-function concatenateStrings() {
-  let result = "";
-  result += "Lorem";
-  result += "ipsum";
-  result += "dolor";
-  result += "sit";
-  result += "amet";
+*/  
 
-  return result;
-}
-*/
-
-function concatenateStrings() {
-  const texts: string[] = ["Lorem", "ipsum", "dolor", "sit", "amet"];
-  
-  let sumOfTexts = "";
-
-  for(let i=0; i<texts.length;i++){
-    sumOfTexts+=texts[i];
-  }
-  return sumOfTexts;
-}
-
-//alt.
-
-function concatenateStrings() {
+function concatenateStrings() :string {
   const texts: string[] = ["Lorem", "ipsum", "dolor", "sit", "amet"];
   
 return texts.join('');
 }
 
 
-//Jobbar på den!
+//KLAR!!
 
 /* 
 7. Denna funktion skall kontrollera att en användare är över 20 år och göra någonting.
     Det finns dock problem med denna typ av funktion. Vad händer när kraven ändras och
     fler och fler parametrar behöver läggas till? T.ex. avatar eller adress. Hitta en bättre
     lösning som är hållbar och skalar bättre. 
+*/
 
-function createUser(
-  name: string,
-  birthday: Date,
-  email: string,
-  password: string
-) {
-  // Validation
-
-  let ageDiff = Date.now() - birthday.getTime();
-  let ageDate = new Date(ageDiff);
-  let userAge = Math.abs(ageDate.getUTCFullYear() - 1970);
-
-  console.log(userAge);
-
-  if (!(userAge < 20)) {
-    // Logik för att skapa en användare
-  } else {
-    return "Du är under 20 år";
+  class User {
+    constructor(
+    public name: string,
+    public birthday: Date,
+    public email: string, 
+    public password: string
+    ) {}
   }
-}*/
 
-function createUser(
-  name: string,
-  birthday: Date,
-  email: string,
-  password: string
-) {
+function createUser(user: User) {
   // Validation
+  const BaseYearForEpoctime = 1970;       //Samma som ovan gällande magic number, en konstant som inte kommer förändras. Finns endast i denna function därav att den ligger kvar med camelCase. Annars skulle den legat globalt med stora bokstäver och understeck.
+  const minimumUserAge = 20;                  
 
-  let ageDiff = Date.now() - birthday.getTime();
-  let ageDate = new Date(ageDiff);
-  let userAge = Math.abs(ageDate.getUTCFullYear() - 1970);
+  const ageDiff = Date.now() - user.birthday.getTime();
+  const ageDate = new Date(ageDiff);
+  const userAge = Math.abs(ageDate.getUTCFullYear() - BaseYearForEpoctime );
 
   console.log(userAge);
 
-  if ((userAge >= 20)) {
+  if (userAge >= minimumUserAge) {
     // Logik för att skapa en användare
   } else {
     return "Du är under 20 år";
@@ -231,4 +176,4 @@ function createUser(
 }
 
 
-//Jobbar på den!
+//KLAR!!
