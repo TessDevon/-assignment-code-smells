@@ -1,68 +1,5 @@
 /*
 1. Se om du kan hitta problem med koden nedan och se om du kan göra den bättre.
-
-export enum Sort {
-  PRICE_ASCENDING = "Stigande pris",
-  PRICE_DECENDING = "Sjunkande pris",
-  NAME_ALPHABETIC = "Alfabetisk ordning",
-  NAME_ALPHABETIC_REVERSE = "Omvänd alfabetisk ordning",
-}
-
-export class Product {
-  constructor(
-    public id: number,
-    public name: string,
-    public imageUrl: string[],
-    public price: number,
-    public description: string
-  ) {
-    this.id = id;
-    this.name = name;
-    this.imageUrl = imageUrl;
-    this.price = price;
-    this.description = description;
-  }
-}
-
-export function sortProductsBy(sort: Sort, products: Product[]): Product[] {
-  let copiedList: Product[] = [];
-  products.forEach((product) => copiedList.push(product));
-
-  let sortedList: Product[] = [];
-  if (sort === Sort.PRICE_ASCENDING) {
-    sortedList = sortList("Price", copiedList);
-    sortedList.reverse();
-  } else if (sort === Sort.PRICE_DECENDING) {
-    sortedList = sortList("Price", copiedList);
-  } else if (sort === Sort.NAME_ALPHABETIC) {
-    sortedList = sortList("Name", copiedList);
-  } else if (sort === Sort.NAME_ALPHABETIC_REVERSE) {
-    sortedList = sortList("Name", copiedList);
-    sortedList.reverse();
-  }
-
-  return sortedList;
-}
-
-function sortList(whichAttribute: string, products: Product[]): Product[] {
-  return products.sort((p1, p2) => {
-    if (whichAttribute === "Price") {
-      if (p1.price < p2.price) {
-        return 1;
-      } else if (p1.price > p2.price) {
-        return -1;
-      }
-      return 0;
-    } else {
-      if (p1.name < p2.name) {
-        return 1;
-      } else if (p1.name > p2.name) {
-        return -1;
-      }
-      return 0;
-    }
-  });
-}
 */
 
 
@@ -87,66 +24,54 @@ export function sortProductsBy(sort: Sort, products: Product[]): Product[] {
   const copiedList: Product[] = [];
   products.forEach((product) => copiedList.push(product));
 
-switch (products) {
-  case sort === Sort.PRICE_ASCENDING
-    sortedList = sortList("Price", copiedList).reverse()
-    break;
+  switch (sort) {
+    case Sort.PRICE_ASCENDING:
+      return sortListByPrice(copiedList).reverse();
 
-  case sort === Sort.PRICE_DECENDING
-    sortedList = sortList("Price", copiedList)
-    break
+    case Sort.PRICE_DECENDING:
+      return sortListByPrice(copiedList);
 
-  case sort === Sort.NAME_ALPHABETIC
-    sortedList = sortList("Name", copiedList);  
-    break
+    case Sort.NAME_ALPHABETIC:
+      return sortListByName(copiedList);  
 
-  case sort === Sort.NAME_ALPHABETIC_REVERSE
-    sortedList = sortList("Name", copiedList).reverse();  
-    break
+    case Sort.NAME_ALPHABETIC_REVERSE:
+      return sortListByName(copiedList).reverse();  
 
-}
-/*
-  let sortedList: Product[] = [];
-  if (sort === Sort.PRICE_ASCENDING) {
-    sortedList = sortList("Price", copiedList).reverse();
-  } else if (sort === Sort.PRICE_DECENDING) {
-    sortedList = sortList("Price", copiedList);
-  } else if (sort === Sort.NAME_ALPHABETIC) {
-    sortedList = sortList("Name", copiedList);
-  } else if (sort === Sort.NAME_ALPHABETIC_REVERSE) {
-    sortedList = sortList("Name", copiedList).reverse();
+    default: 
+      return []; 
   }
-
-  return sortedList;
-*/
-//Under arbete.. switch????  
 }
 
-function sortList(whichAttribute: string, products: Product[]): Product[] {
+function sortListByPrice(products: Product[]): Product[] {
   return products.sort((p1, p2) => {
-    if (whichAttribute === "Price") {
-      if (p1.price < p2.price) {
-        return 1;
-      } else if (p1.price > p2.price) {
-        return -1;
-      }
-      return 0;
-    } else {
-      if (p1.name < p2.name) {
-        return 1;
-      } else if (p1.name > p2.name) {
-        return -1;
-      }
-      return 0;
+    if (p1.price < p2.price) {
+      return 1;
+    } else if (p1.price > p2.price) {
+      return -1;
     }
+    return 0;
   });
 }
 
+function sortListByName(products: Product[]): Product[] {
+  return products.sort((p1, p2) => {
+    if (p1.name < p2.name) {
+      return 1;
+    } else if (p1.name > p2.name) {
+      return -1;
+    }
+    return 0;
+  });
+}
+
+//KLAR!
 
 
 /*
   2. Refaktorera funktionen createProductHtml :)
-  
+   
+
+
 class Cart {
   addToCart(i: number) {}
 }
@@ -249,10 +174,14 @@ export function createProductHtml() {
   let listastext = JSON.stringify(productList);
   localStorage.setItem("savedList", listastext);
   sessionStorage.clear();
-}*/ 
-
-
+}
+*/
+/*
 interface ICart {                    //NGT ÄR FEL!! constructor fattas OM det ska var en klass..
+  addToCart(i: number) {}
+}*/
+
+class Cart {
   addToCart(i: number) {}
 }
 
@@ -265,47 +194,30 @@ interface IProduct {
 }*/
 
 
-export let cartList = JSON.parse(localStorage.getItem("savedCartList") || "[]");
-export let productList = JSON.parse(localStorage.getItem("savedList") || "[]");
+export const carts = JSON.parse(localStorage.getItem("savedCartList") || "[]");
+export const products = JSON.parse(localStorage.getItem("savedList") || "[]");
 
-export function retrieveDataToCreateHtml() {
-  let cartList: ICart[] = JSON.parse(
-    localStorage.getItem("savedCartList") || "[]"
-  );
-  let productList: ICart[] = JSON.parse(
-    localStorage.getItem("savedList") || "[]"
-  );
-}
-
-/*
-function createHtml() {
-  const products: IProduct[] = JSON.parse(
-    localStorage.getItem("products") || "[]"
-  );
-
-  //const valueFromLs = localStorage.getItem("products");
-  //const objectFromLs = JSON.parse(valueFromLs || "[]");
-*/
-
-export function createProductHtml() {
+function updateValueOnFloatingcartnumber() {
   let quantity = 0;
-  for (let i = 0; i < cartList.length; i++) {
-    quantity += cartList[i].quantity;
+  for (let i = 0; i < carts.length; i++) {
+    quantity += carts[i].quantity;
   }
-  let floatingCart = document.getElementById(
+  const floatingCart = document.getElementById(
     "floatingcartnumber"
   ) as HTMLElement;
   floatingCart.innerHTML = "" + quantity;
+}
 
-  for (let i = 0; i < productList.length; i++) {
-    let dogproduct: HTMLDivElement = document.createElement("div");
-    let dogImgContainer: HTMLDivElement = document.createElement("div");
+export function createProductHtml() {
+  for (let i = 0; i < products.length; i++) {
+    const dogproduct: HTMLDivElement = document.createElement("div");
+    const dogImgContainer: HTMLDivElement = document.createElement("div");
     dogImgContainer.className = "dogimgcontainer";
     dogproduct.appendChild(dogImgContainer);
-    let dogImg: HTMLImageElement = document.createElement("img");
+    const dogImg: HTMLImageElement = document.createElement("img");
 
-    dogImg.src = productList[i].picture;
-    dogImg.alt = productList[i].pictureAlt;
+    dogImg.src = products[i].picture;
+    dogImg.alt = products[i].pictureAlt;
 
     dogImg.addEventListener("mouseover", () => {
       cartSymbolContainer.classList.add("hover");
@@ -318,69 +230,69 @@ export function createProductHtml() {
     });
 
     dogImgContainer.appendChild(dogImg);
-    let cartSymbolContainer: HTMLDivElement = document.createElement("div");
+    const cartSymbolContainer: HTMLDivElement = document.createElement("div");
     cartSymbolContainer.className = "cartSymbolContainer";
     dogImgContainer.appendChild(cartSymbolContainer);
 
-    let cartSymbol: HTMLElement = document.createElement("i");
+    const cartSymbol: HTMLElement = document.createElement("i");
     cartSymbol.className = "bi bi-bag-plus";
     cartSymbolContainer.appendChild(cartSymbol);
 
-    let name: HTMLHeadingElement = document.createElement("h5");
+    const name: HTMLHeadingElement = document.createElement("h5");
     name.innerHTML = productList[i].name;
     dogproduct.appendChild(name);
 
-    let price: HTMLHeadingElement = document.createElement("p");
-    price.innerHTML = "$" + productList[i].price;
+    const price: HTMLHeadingElement = document.createElement("p");
+    price.innerHTML = "$" + products[i].price;
     dogproduct.appendChild(price);
 
-    let info: HTMLHeadingElement = document.createElement("p");
-    info.innerHTML = productList[i].info;
+    const info: HTMLHeadingElement = document.createElement("p");
+    info.innerHTML = products[i].info;
     dogproduct.appendChild(info);
 
-    productList[i].productSpec = false;
+    products[i].productSpec = false;
 
     dogImg.addEventListener("click", () => {
-      productList[i].productSpec = !productList[i].productSpec;
+      products[i].productSpec = !products[i].productSpec;
       window.location.href = "product-spec.html#backArrow";
-      let listastext = JSON.stringify(productList);
+      const listastext = JSON.stringify(products);
       localStorage.setItem("savedList", listastext);
     });
 
     cartSymbol.addEventListener("click", () => {
-      let cart = new Cart();
+      const cart = new Cart();
       cart.addToCart(i);
     });
 
-    if (productList[i].category === "sassy") {
-      let cat1: HTMLElement = document.getElementById("sassy") as HTMLElement;
+    if (products[i].category === "sassy") {
+      const cat1: HTMLElement = document.getElementById("sassy") as HTMLElement;
       dogproduct.className = "dogproduct";
       cat1.appendChild(dogproduct);
     }
-    if (productList[i].category === "kriminella") {
-      let cat2: HTMLElement = document.getElementById(
+    if (products[i].category === "kriminella") {
+      const cat2: HTMLElement = document.getElementById(
         "kriminella"
       ) as HTMLElement;
       dogproduct.className = "dogproduct";
       cat2.appendChild(dogproduct);
     }
-    if (productList[i].category == "singlar") {
-      let cat3: HTMLElement = document.getElementById("singlar") as HTMLElement;
+    if (products[i].category == "singlar") {
+      const cat3: HTMLElement = document.getElementById("singlar") as HTMLElement;
       dogproduct.className = "dogproduct";
       cat3.appendChild(dogproduct);
     }
-    if (productList[i].category === "puppy") {
-      let cat4: HTMLElement = document.getElementById("puppy") as HTMLElement;
+    if (products[i].category === "puppy") {
+      const cat4: HTMLElement = document.getElementById("puppy") as HTMLElement;
       dogproduct.className = "dogproduct";
       cat4.appendChild(dogproduct);
     }
-    if (productList[i].category === "oldies") {
-      let cat5: HTMLElement = document.getElementById("oldies") as HTMLElement;
+    if (products[i].category === "oldies") {
+      const cat5: HTMLElement = document.getElementById("oldies") as HTMLElement;
       dogproduct.className = "dogproduct";
       cat5.appendChild(dogproduct);
     }
   }
-  let listastext = JSON.stringify(productList);
+  const listastext = JSON.stringify(products);
   localStorage.setItem("savedList", listastext);
   sessionStorage.clear();
 }
